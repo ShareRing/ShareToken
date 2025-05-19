@@ -1,0 +1,10 @@
+[profile.default]
+auto_detect_solc = true
+gas_reports      = [ "ShareToken", "ShareTokenExtended" ]
+libs             = [ "lib" ]
+out              = "out"
+remappings       = [ "@openzeppelin/=lib/openzeppelin-contracts/" ]
+solc_version     = "0.8.20"
+src              = "src"
+
+# See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
