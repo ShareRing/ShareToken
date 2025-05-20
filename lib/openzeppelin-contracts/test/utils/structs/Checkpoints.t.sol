@@ -4,24 +4,24 @@
 pragma solidity ^0.8.20;
 
 import {Test} from "forge-std/Test.sol";
-import {SafeCast} from "../../../contracts/utils/math/SafeCast.sol";
-import {Checkpoints} from "../../../contracts/utils/structs/Checkpoints.sol";
+import {SafeCast} from "@openzeppelin/contracts/utils/math/SafeCast.sol";
+import {Checkpoints} from "@openzeppelin/contracts/utils/structs/Checkpoints.sol";
 
 contract CheckpointsTrace224Test is Test {
     using Checkpoints for Checkpoints.Trace224;
 
-    // Maximum gap between keys used during the fuzzing tests: the `_prepareKeys` function with make sure that
+    // Maximum gap between keys used during the fuzzing tests: the `_prepareKeys` function will make sure that
     // key#n+1 is in the [key#n, key#n + _KEY_MAX_GAP] range.
     uint8 internal constant _KEY_MAX_GAP = 64;
 
     Checkpoints.Trace224 internal _ckpts;
 
     // helpers
-    function _boundUint32(uint32 x, uint32 min, uint32 max) internal view returns (uint32) {
+    function _boundUint32(uint32 x, uint32 min, uint32 max) internal pure returns (uint32) {
         return SafeCast.toUint32(bound(uint256(x), uint256(min), uint256(max)));
     }
 
-    function _prepareKeys(uint32[] memory keys, uint32 maxSpread) internal view {
+    function _prepareKeys(uint32[] memory keys, uint32 maxSpread) internal pure {
         uint32 lastKey = 0;
         for (uint256 i = 0; i < keys.length; ++i) {
             uint32 key = _boundUint32(keys[i], lastKey, lastKey + maxSpread);
@@ -30,7 +30,7 @@ contract CheckpointsTrace224Test is Test {
         }
     }
 
-    function _assertLatestCheckpoint(bool exist, uint32 key, uint224 value) internal {
+    function _assertLatestCheckpoint(bool exist, uint32 key, uint224 value) internal view {
         (bool _exist, uint32 _key, uint224 _value) = _ckpts.latestCheckpoint();
         assertEq(_exist, exist);
         assertEq(_key, key);
@@ -118,18 +118,18 @@ contract CheckpointsTrace224Test is Test {
 contract CheckpointsTrace208Test is Test {
     using Checkpoints for Checkpoints.Trace208;
 
-    // Maximum gap between keys used during the fuzzing tests: the `_prepareKeys` function with make sure that
+    // Maximum gap between keys used during the fuzzing tests: the `_prepareKeys` function will make sure that
     // key#n+1 is in the [key#n, key#n + _KEY_MAX_GAP] range.
     uint8 internal constant _KEY_MAX_GAP = 64;
 
     Checkpoints.Trace208 internal _ckpts;
 
     // helpers
-    function _boundUint48(uint48 x, uint48 min, uint48 max) internal view returns (uint48) {
+    function _boundUint48(uint48 x, uint48 min, uint48 max) internal pure returns (uint48) {
         return SafeCast.toUint48(bound(uint256(x), uint256(min), uint256(max)));
     }
 
-    function _prepareKeys(uint48[] memory keys, uint48 maxSpread) internal view {
+    function _prepareKeys(uint48[] memory keys, uint48 maxSpread) internal pure {
         uint48 lastKey = 0;
         for (uint256 i = 0; i < keys.length; ++i) {
             uint48 key = _boundUint48(keys[i], lastKey, lastKey + maxSpread);
@@ -138,7 +138,7 @@ contract CheckpointsTrace208Test is Test {
         }
     }
 
-    function _assertLatestCheckpoint(bool exist, uint48 key, uint208 value) internal {
+    function _assertLatestCheckpoint(bool exist, uint48 key, uint208 value) internal view {
         (bool _exist, uint48 _key, uint208 _value) = _ckpts.latestCheckpoint();
         assertEq(_exist, exist);
         assertEq(_key, key);
@@ -226,18 +226,18 @@ contract CheckpointsTrace208Test is Test {
 contract CheckpointsTrace160Test is Test {
     using Checkpoints for Checkpoints.Trace160;
 
-    // Maximum gap between keys used during the fuzzing tests: the `_prepareKeys` function with make sure that
+    // Maximum gap between keys used during the fuzzing tests: the `_prepareKeys` function will make sure that
     // key#n+1 is in the [key#n, key#n + _KEY_MAX_GAP] range.
     uint8 internal constant _KEY_MAX_GAP = 64;
 
     Checkpoints.Trace160 internal _ckpts;
 
     // helpers
-    function _boundUint96(uint96 x, uint96 min, uint96 max) internal view returns (uint96) {
+    function _boundUint96(uint96 x, uint96 min, uint96 max) internal pure returns (uint96) {
         return SafeCast.toUint96(bound(uint256(x), uint256(min), uint256(max)));
     }
 
-    function _prepareKeys(uint96[] memory keys, uint96 maxSpread) internal view {
+    function _prepareKeys(uint96[] memory keys, uint96 maxSpread) internal pure {
         uint96 lastKey = 0;
         for (uint256 i = 0; i < keys.length; ++i) {
             uint96 key = _boundUint96(keys[i], lastKey, lastKey + maxSpread);
@@ -246,7 +246,7 @@ contract CheckpointsTrace160Test is Test {
         }
     }
 
-    function _assertLatestCheckpoint(bool exist, uint96 key, uint160 value) internal {
+    function _assertLatestCheckpoint(bool exist, uint96 key, uint160 value) internal view {
         (bool _exist, uint96 _key, uint160 _value) = _ckpts.latestCheckpoint();
         assertEq(_exist, exist);
         assertEq(_key, key);

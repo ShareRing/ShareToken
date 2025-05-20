@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.0.0) (governance/extensions/GovernorTimelockCompound.sol)
+// OpenZeppelin Contracts (last updated v5.3.0) (governance/extensions/GovernorTimelockCompound.sol)
 
 pragma solidity ^0.8.20;
 
@@ -10,13 +10,13 @@ import {SafeCast} from "../../utils/math/SafeCast.sol";
 
 /**
  * @dev Extension of {Governor} that binds the execution process to a Compound Timelock. This adds a delay, enforced by
- * the external timelock to all successful proposal (in addition to the voting duration). The {Governor} needs to be
+ * the external timelock to all successful proposals (in addition to the voting duration). The {Governor} needs to be
  * the admin of the timelock for any operation to be performed. A public, unrestricted,
  * {GovernorTimelockCompound-__acceptAdmin} is available to accept ownership of the timelock.
  *
  * Using this model means the proposal will be operated by the {TimelockController} and not by the {Governor}. Thus,
  * the assets and permissions must be attached to the {TimelockController}. Any asset sent to the {Governor} will be
- * inaccessible.
+ * inaccessible from a proposal, unless executed via {Governor-relay}.
  */
 abstract contract GovernorTimelockCompound is Governor {
     ICompoundTimelock private _timelock;
@@ -53,9 +53,7 @@ abstract contract GovernorTimelockCompound is Governor {
         return address(_timelock);
     }
 
-    /**
-     * @dev See {IGovernor-proposalNeedsQueuing}.
-     */
+    /// @inheritdoc IGovernor
     function proposalNeedsQueuing(uint256) public view virtual override returns (bool) {
         return true;
     }

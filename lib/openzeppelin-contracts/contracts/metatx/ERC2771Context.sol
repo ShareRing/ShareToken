@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: MIT
-// OpenZeppelin Contracts (last updated v5.0.1) (metatx/ERC2771Context.sol)
+// OpenZeppelin Contracts (last updated v5.1.0) (metatx/ERC2771Context.sol)
 
 pragma solidity ^0.8.20;
 
 import {Context} from "../utils/Context.sol";
 
 /**
- * @dev Context variant with ERC2771 support.
+ * @dev Context variant with ERC-2771 support.
  *
  * WARNING: Avoid using this pattern in contracts that rely in a specific calldata length as they'll
- * be affected by any forwarder whose `msg.data` is suffixed with the `from` address according to the ERC2771
+ * be affected by any forwarder whose `msg.data` is suffixed with the `from` address according to the ERC-2771
  * specification adding the address size in bytes (20) to the calldata size. An example of an unexpected
  * behavior could be an unintended fallback (or another function) invocation while trying to invoke the `receive`
  * function only accessible if `msg.data.length == 0`.
@@ -55,8 +55,10 @@ abstract contract ERC2771Context is Context {
     function _msgSender() internal view virtual override returns (address) {
         uint256 calldataLength = msg.data.length;
         uint256 contextSuffixLength = _contextSuffixLength();
-        if (isTrustedForwarder(msg.sender) && calldataLength >= contextSuffixLength) {
-            return address(bytes20(msg.data[calldataLength - contextSuffixLength:]));
+        if (calldataLength >= contextSuffixLength && isTrustedForwarder(msg.sender)) {
+            unchecked {
+                return address(bytes20(msg.data[calldataLength - contextSuffixLength:]));
+            }
         } else {
             return super._msgSender();
         }
@@ -70,8 +72,10 @@ abstract contract ERC2771Context is Context {
     function _msgData() internal view virtual override returns (bytes calldata) {
         uint256 calldataLength = msg.data.length;
         uint256 contextSuffixLength = _contextSuffixLength();
-        if (isTrustedForwarder(msg.sender) && calldataLength >= contextSuffixLength) {
-            return msg.data[:calldataLength - contextSuffixLength];
+        if (calldataLength >= contextSuffixLength && isTrustedForwarder(msg.sender)) {
+            unchecked {
+                return msg.data[:calldataLength - contextSuffixLength];
+            }
         } else {
             return super._msgData();
         }

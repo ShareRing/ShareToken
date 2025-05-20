@@ -1,11 +1,13 @@
 [profile.default]
 fs_permissions = [{ access = "read-write", path = "./"}]
+optimizer = true
+optimizer_runs = 200
 
 [rpc_endpoints]
 # The RPC URLs are modified versions of the default for testing initialization.
-mainnet = "https://mainnet.infura.io/v3/7a8769b798b642f6933f2ed52042bd70" # Different API key.
-optimism_goerli = "https://goerli.optimism.io/" # Adds a trailing slash.
-arbitrum_one_goerli = "https://goerli-rollup.arbitrum.io/rpc/" # Adds a trailing slash.
+mainnet = "https://eth-mainnet.alchemyapi.io/v2/WV407BEiBmjNJfKo9Uo_55u0z0ITyCOX" # Different API key.
+optimism_sepolia = "https://sepolia.optimism.io/" # Adds a trailing slash.
+arbitrum_one_sepolia = "https://sepolia-rollup.arbitrum.io/rpc/" # Adds a trailing slash.
 needs_undefined_env_var = "${UNDEFINED_RPC_URL_PLACEHOLDER}"
 
 [fmt]
